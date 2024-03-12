@@ -38,9 +38,16 @@ enum Error {
     FromHex(#[from] ::hex::FromHexError),
 }
 
+#[derive(Debug, Clone, Getters)]
 struct BtcSubmissionMaterial {
     id: BlockHash,
     block: BtcBlock,
+}
+
+impl BtcSubmissionMaterial {
+    fn block_hash(&self) -> BlockHash {
+        self.block().block_hash()
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, Getters)]
@@ -94,7 +101,10 @@ impl FromStr for BtcSubmissionMaterial {
 
 pub fn main() {
     let s = read::<String>();
-    let b = BtcSubmissionMaterial::from_str(&s).expect("could not parse submission material");
+    let sub_mat = BtcSubmissionMaterial::from_str(&s).expect("could not parse submission material");
+    let id = sub_mat.id();
+    let hash = sub_mat.block_hash();
+    let r = &hash == id;
 
-    write(&true);
+    write(&r);
 }
