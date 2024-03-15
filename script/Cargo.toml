@@ -6,4 +6,5 @@ edition = "2021"
 
 [dependencies]
 clap = "4.5.2"
+derive-getters = "0.3.0"
 sp1-core = { git = "https://github.com/succinctlabs/sp1.git" }
