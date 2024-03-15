@@ -6,7 +6,7 @@ use std::{
     path::Path,
 };
 
-const ELF_PATH: &str = "../../program/elf/riscv32im-succinct-zkvm-elf";
+const ELF_PATH: &str = "../program/elf/riscv32im-succinct-zkvm-elf";
 
 use clap::{Parser, Subcommand};
 
