@@ -3,25 +3,22 @@
 #![no_main]
 sp1_zkvm::entrypoint!(main);
 
-use std::str::FromStr;
-use sp1_zkvm::io::{write, read};
-use derive_getters::Getters;
-use serde::{Serialize, Deserialize};
-use thiserror::Error;
 use ::hex::decode;
 use bitcoin::{
-    hex::HexToArrayError,
     blockdata::{
-        block::{Version, Header as BtcBlockHeader, Block as BtcBlock},
-        opcodes,
-        script::{Builder as BtcScriptBuilder, Script as BtcScript},
-        transaction::{OutPoint as BtcOutPoint, Transaction as BtcTransaction, TxIn as BtcUtxo, TxOut as BtcTxOut},
+        block::{Block as BtcBlock, Header as BtcBlockHeader, Version},
+        transaction::Transaction as BtcTransaction,
     },
     consensus::encode::deserialize as btc_deserialize,
     hash_types::{BlockHash, TxMerkleNode},
+    hex::HexToArrayError,
     CompactTarget,
-    hashes::Hash,
 };
+use derive_getters::Getters;
+use serde::{Deserialize, Serialize};
+use sp1_zkvm::io::{read, write};
+use std::str::FromStr;
+use thiserror::Error;
 
 #[derive(Debug, Error)]
 enum Error {
@@ -47,6 +44,10 @@ struct BtcSubmissionMaterial {
 impl BtcSubmissionMaterial {
     fn block_hash(&self) -> BlockHash {
         self.block().block_hash()
+    }
+
+    fn check_merkle_root(&self) -> bool {
+        self.block().check_merkle_root()
     }
 }
 
@@ -82,10 +83,18 @@ impl FromStr for BtcSubmissionMaterial {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let j = BtcSubmissionMaterialJson::from_str(s)?;
         Ok(Self {
-            id: BlockHash::from_str(j.block().id())
-                .unwrap_or_else(|_| BlockHash::from_str("0x0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+            id: BlockHash::from_str(j.block().id()).unwrap_or_else(|_| {
+                BlockHash::from_str(
+                    "0x0000000000000000000000000000000000000000000000000000000000000000",
+                )
+                .unwrap()
+            }),
             block: BtcBlock {
-                txdata: j.transactions.iter().map(|t| Ok(btc_deserialize::<BtcTransaction>(&decode(t)?)?)).collect::<Result<Vec<_>, Self::Err>>()?,
+                txdata: j
+                    .transactions
+                    .iter()
+                    .map(|t| Ok(btc_deserialize::<BtcTransaction>(&decode(t)?)?))
+                    .collect::<Result<Vec<_>, Self::Err>>()?,
                 header: BtcBlockHeader {
                     nonce: *j.block().nonce(),
                     time: *j.block().timestamp(),
@@ -94,7 +103,7 @@ impl FromStr for BtcSubmissionMaterial {
                     merkle_root: TxMerkleNode::from_str(&j.block().merkle_root)?,
                     prev_blockhash: BlockHash::from_str(&j.block().previousblockhash)?,
                 },
-            }
+            },
         })
     }
 }
@@ -104,7 +113,9 @@ pub fn main() {
     let sub_mat = BtcSubmissionMaterial::from_str(&s).expect("could not parse submission material");
     let id = sub_mat.id();
     let hash = sub_mat.block_hash();
-    let r = &hash == id;
-
-    write(&r);
+    println!("  hash in header: {id}");
+    println!(" calculated hash: {hash}");
+    let header_hash_result = &hash == id;
+    let tx_merkle_root_result = sub_mat.check_merkle_root();
+    write(&(header_hash_result && tx_merkle_root_result));
 }
