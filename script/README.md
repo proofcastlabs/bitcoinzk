@@ -1,5 +1,5 @@
-Run via:
+Run via to see usage info:
 
-`RUST_LOG=<info|debug|warn> cargo run --release`
+`RUST_LOG=<info|debug|warn|nonw> cargo run --release`
 
 To build the elf required to run this, please see: `../program/README.md`
