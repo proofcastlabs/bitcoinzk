@@ -6,7 +6,7 @@ use std::{
     path::Path,
 };
 
-const ELF_PATH: &str = "../program/elf/riscv32im-succinct-zkvm-elf";
+const DEFAULT_ELF_PATH: &str = "../program/elf/riscv32im-succinct-zkvm-elf";
 
 use clap::{Parser, Subcommand};
 
@@ -27,6 +27,10 @@ enum Commands {
 
         /// Path to btc submission material
         path: String,
+
+        /// Optional path to elf
+        #[arg(long)]
+        elf_path: Option<String>,
     },
 }
 
@@ -36,18 +40,28 @@ fn main() {
     utils::setup_tracer();
 
     match cli.commands {
-        Commands::GenerateProof { hash, path } => {
+        Commands::GenerateProof {
+            hash,
+            path,
+            elf_path,
+        } => {
             let s = read_to_string(&path)
                 .unwrap_or_else(|_| panic!("could not read file at path: {path}"));
 
+            let elf_path = if let Some(path) = elf_path {
+                path
+            } else {
+                DEFAULT_ELF_PATH.to_string()
+            };
+
             // NOTE: Check the elf exists
-            if !Path::new(ELF_PATH).exists() {
+            if !Path::new(&elf_path).exists() {
                 panic!(
-                    "elf does not exist at path: {ELF_PATH}, see the readme for how to create it!"
+                    "elf does not exist at path: {elf_path}, see the readme for how to create it!"
                 );
             };
 
-            let elf_bytes = read(ELF_PATH).expect("this to work because of above check");
+            let elf_bytes = read(&elf_path).expect("this to work because of above check");
 
             // NOTE:  Generate proof.
             let mut stdin = SP1Stdin::new();
