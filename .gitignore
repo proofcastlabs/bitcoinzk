@@ -1,3 +1,4 @@
 */target
 program/elf/riscv32im-succinct-zkvm-elf
 **/*block*.json
+script/proof-with-io.json
