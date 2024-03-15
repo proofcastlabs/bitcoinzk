@@ -5,4 +5,5 @@ name = "bitcoinz-script"
 edition = "2021"
 
 [dependencies]
+clap = "4.5.2"
 sp1-core = { git = "https://github.com/succinctlabs/sp1.git" }
