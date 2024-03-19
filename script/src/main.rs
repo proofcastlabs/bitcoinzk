@@ -1,13 +1,8 @@
 mod cli;
 
+use bitcoin::{get_blocks, write_blocks_to_file, BtcError, DEFAULT_ELF_PATH, MAX_NUM_BLOCKS};
 use clap::Parser;
 use cli::{Cli, Commands};
-use bitcoin::{
-    DEFAULT_ELF_PATH, MAX_NUM_BLOCKS,
-    write_blocks_to_file,
-    BtcError,
-    get_blocks,
-};
 
 use sp1_core::{utils as sp1_utils, SP1Prover, SP1Stdin, SP1Verifier};
 use std::{
@@ -20,13 +15,14 @@ async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
         Commands::GetBlocks {
             start,
             amount,
+            output,
             rpc_endpoint,
         } => {
             if *amount > MAX_NUM_BLOCKS {
                 return Err(BtcError::TooManyBlocks(*amount));
             };
             let blocks = get_blocks(rpc_endpoint, *start, *amount).await?;
-            write_blocks_to_file(blocks)?;
+            write_blocks_to_file(blocks, output.clone())?;
             Ok(())
         }
         Commands::GenerateProof {

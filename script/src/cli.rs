@@ -34,5 +34,9 @@ pub enum Commands {
 
         /// Amount of blocks to get
         amount: u64,
+
+        /// Optional path to write blocks file to
+        #[arg(long)]
+        output: Option<String>,
     },
 }
