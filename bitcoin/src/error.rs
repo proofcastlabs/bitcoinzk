@@ -2,7 +2,7 @@ use crate::constants::MAX_NUM_BLOCKS;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
-pub(crate) enum Error {
+pub enum Error {
     #[error("cannot get block with hash: {0}")]
     NoBlock(bitcoin::BlockHash),
 

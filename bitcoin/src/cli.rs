@@ -3,14 +3,14 @@ use derive_getters::Getters;
 
 #[derive(Parser, Getters)]
 #[command(version, about, long_about = None, rename_all="camelCase")]
-pub(crate) struct Cli {
+pub struct Cli {
     #[command(subcommand)]
     commands: Commands,
 }
 
 #[derive(Subcommand)]
 #[command(rename_all = "camelCase")]
-pub(crate) enum Commands {
+pub enum Commands {
     /// Generate proof
     GenerateProof {
         /// Hash of block prior to submission material

@@ -1,27 +1,12 @@
-mod btc_block;
-mod btc_blocks;
-mod btc_blocks_wrapper;
-mod cli;
-mod constants;
-mod curl;
-mod error;
-mod get_block_hashes;
-mod get_blocks;
-mod json_response;
-mod utils;
-mod write_blocks;
-
-#[macro_use]
-extern crate log;
-
-use crate::{
-    constants::{DEFAULT_ELF_PATH, MAX_NUM_BLOCKS},
-    write_blocks::write_blocks_to_file,
-};
 use clap::Parser;
-use cli::{Cli, Commands};
-use error::Error;
-use get_blocks::get_blocks;
+use bitcoin::{
+    DEFAULT_ELF_PATH, MAX_NUM_BLOCKS,
+    write_blocks_to_file,
+    Cli, Commands,
+    Error,
+    get_blocks,
+};
+
 use sp1_core::{utils as sp1_utils, SP1Prover, SP1Stdin, SP1Verifier};
 use std::{
     fs::{read, read_to_string},

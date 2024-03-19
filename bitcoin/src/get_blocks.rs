@@ -29,7 +29,7 @@ fn get_get_block_futures(
     stream::iter(block_hashes).then(|block_hash| get_block_future(rpc_endpoint, block_hash))
 }
 
-pub(crate) async fn get_blocks(
+pub async fn get_blocks(
     rpc_endpoint: &str,
     start: u64,
     amount: u64,
