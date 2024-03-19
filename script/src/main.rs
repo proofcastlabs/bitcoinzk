@@ -1,8 +1,10 @@
+mod cli;
+
 use clap::Parser;
+use cli::{Cli, Commands};
 use bitcoin::{
     DEFAULT_ELF_PATH, MAX_NUM_BLOCKS,
     write_blocks_to_file,
-    Cli, Commands,
     BtcError,
     get_blocks,
 };
