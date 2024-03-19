@@ -1,4 +1,4 @@
-use crate::error::Error;
+use crate::BtcError;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value as Json};
 use std::fmt;
@@ -18,11 +18,11 @@ impl JsonResponse {
         self.result.is_some()
     }
 
-    pub(crate) fn result(self) -> Result<Json, Error> {
+    pub(crate) fn result(self) -> Result<Json, BtcError> {
         if let Some(j) = self.result {
             Ok(j)
         } else {
-            Err(Error::HttpJsonResponse(
+            Err(BtcError::HttpJsonResponse(
                 self.error.expect("this to exist").to_string(),
             ))
         }

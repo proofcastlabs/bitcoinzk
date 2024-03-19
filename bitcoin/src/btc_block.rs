@@ -1,5 +1,4 @@
-use crate::error::Error;
-use ::hex::decode;
+use crate::BtcError;
 use bitcoin::{
     blockdata::{
         block::{Block as BtcBlock, Header as BtcBlockHeader, Version},
@@ -32,7 +31,7 @@ pub(crate) struct BtcTxJson {
 }
 
 impl FromStr for BtcBlockJson {
-    type Err = Error;
+    type Err = BtcError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(serde_json::from_str(s)?)
@@ -40,14 +39,14 @@ impl FromStr for BtcBlockJson {
 }
 
 impl BtcBlockJson {
-    pub(crate) fn to_btc_block(&self) -> Result<BtcBlock, Error> {
+    pub(crate) fn to_btc_block(&self) -> Result<BtcBlock, BtcError> {
         Ok(BtcBlock {
             /* // FIXME re-instate this!
             txdata: self
                 .tx
                 .iter()
                 .map(|t| Ok(btc_deserialize::<BtcTransaction>(&decode(t.hex())?)?))
-                .collect::<Result<Vec<_>, Error>>()?,
+                .collect::<Result<Vec<_>, BtcError>>()?,
             */
             txdata: vec![], // FIXME use the above
             header: BtcBlockHeader {

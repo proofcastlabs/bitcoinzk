@@ -2,18 +2,12 @@ use crate::constants::MAX_NUM_BLOCKS;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
-pub enum Error {
+pub enum BtcError {
     #[error("cannot get block with hash: {0}")]
     NoBlock(bitcoin::BlockHash),
 
     #[error("hex array error: {0}")]
     HexArray(#[from] bitcoin::hex::HexToArrayError),
-
-    #[error("reqweset error: {0}")]
-    Reqwest(#[from] reqwest::Error),
-
-    #[error("unexpected json response error: {0}")]
-    Unexpected(crate::json_response::JsonResponse),
 
     #[error("http json response error: {0}")]
     HttpJsonResponse(String),

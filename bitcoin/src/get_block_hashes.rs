@@ -1,4 +1,4 @@
-use crate::{curl::curl, error::Error, json_response::JsonResponse};
+use crate::{curl, BtcError, JsonResponse};
 use bitcoin::{hashes::Hash, BlockHash};
 use futures::{stream, Future, Stream, StreamExt};
 use serde_json::json;
@@ -9,7 +9,7 @@ const MAX_CONCURRENT_REQUESTS: usize = 50;
 async fn get_block_hash_future(
     rpc_endpoint: &str,
     n: u64,
-) -> impl Future<Output = Result<Output, Error>> + '_ {
+) -> impl Future<Output = Result<Output, BtcError>> + '_ {
     debug!("getting block hash from block num {n}");
     curl(rpc_endpoint, "getblockhash", json!([n]))
 }
@@ -17,7 +17,7 @@ async fn get_block_hash_future(
 fn get_get_block_hash_futures<'a>(
     rpc_endpoint: &'a str,
     block_nums: &'a [u64],
-) -> impl Stream<Item = impl Future<Output = Result<Output, Error>> + 'a> + 'a {
+) -> impl Stream<Item = impl Future<Output = Result<Output, BtcError>> + 'a> + 'a {
     stream::iter(block_nums).then(|n| get_block_hash_future(rpc_endpoint, *n))
 }
 
@@ -25,7 +25,7 @@ pub(crate) async fn get_block_hashes(
     rpc_endpoint: &str,
     start: u64,
     amount: u64,
-) -> Result<Vec<BlockHash>, Error> {
+) -> Result<Vec<BlockHash>, BtcError> {
     let block_nums = (0..amount).map(|i| start + i).collect::<Vec<u64>>();
     let futures = get_get_block_hash_futures(rpc_endpoint, &block_nums);
 
@@ -41,7 +41,7 @@ pub(crate) async fn get_block_hashes(
                 &r?.stdout,
             )?)?)
         })
-        .collect::<Result<Vec<JsonResponse>, Error>>()?;
+        .collect::<Result<Vec<JsonResponse>, BtcError>>()?;
 
     json_responses
         .into_iter()
@@ -51,5 +51,5 @@ pub(crate) async fn get_block_hashes(
             bs.reverse();
             Ok(BlockHash::from_slice(&bs)?)
         })
-        .collect::<Result<Vec<_>, Error>>()
+        .collect::<Result<Vec<_>, BtcError>>()
 }

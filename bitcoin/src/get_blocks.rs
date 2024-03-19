@@ -1,6 +1,6 @@
 use crate::{
-    btc_block::BtcBlockJson, btc_blocks::BtcBlocks, curl::curl, error::Error,
-    get_block_hashes::get_block_hashes, json_response::JsonResponse,
+    btc_block::BtcBlockJson, btc_blocks::BtcBlocks, curl, get_block_hashes::get_block_hashes,
+    json_response::JsonResponse, BtcError,
 };
 use bitcoin::{blockdata::block::Block as BtcBlock, BlockHash};
 use futures::{stream, Future, Stream, StreamExt};
@@ -17,7 +17,7 @@ const RPC_METHOD: &str = "getblock";
 async fn get_block_future(
     rpc_endpoint: &str,
     block_hash: BlockHash,
-) -> impl Future<Output = Result<Output, Error>> + '_ {
+) -> impl Future<Output = Result<Output, BtcError>> + '_ {
     debug!("getting block with hash {block_hash}");
     curl(rpc_endpoint, RPC_METHOD, json!([block_hash, VERBOSITY]))
 }
@@ -25,7 +25,7 @@ async fn get_block_future(
 fn get_get_block_futures(
     rpc_endpoint: &str,
     block_hashes: Vec<BlockHash>,
-) -> impl Stream<Item = impl Future<Output = Result<Output, Error>> + '_> {
+) -> impl Stream<Item = impl Future<Output = Result<Output, BtcError>> + '_> {
     stream::iter(block_hashes).then(|block_hash| get_block_future(rpc_endpoint, block_hash))
 }
 
@@ -33,7 +33,7 @@ pub async fn get_blocks(
     rpc_endpoint: &str,
     start: u64,
     amount: u64,
-) -> Result<BtcBlocks, Error> {
+) -> Result<BtcBlocks, BtcError> {
     let block_hashes = get_block_hashes(rpc_endpoint, start, amount).await?;
     let futures = get_get_block_futures(rpc_endpoint, block_hashes);
 
@@ -51,6 +51,6 @@ pub async fn get_blocks(
                 let block_json = BtcBlockJson::from_str(&r?.to_string())?; // FIXME very inefficient
                 block_json.to_btc_block()
             })
-            .collect::<Result<Vec<BtcBlock>, Error>>()?,
+            .collect::<Result<Vec<BtcBlock>, BtcError>>()?,
     ))
 }
