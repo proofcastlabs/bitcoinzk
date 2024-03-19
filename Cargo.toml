@@ -1,0 +1,13 @@
+[workspace]
+resolver = "2"
+members = [
+    "script",
+    "program",
+]
+
+[profile.dev]
+split-debuginfo = "unpacked"
+
+[profile.release]
+lto = "thin"
+overflow-checks = true
