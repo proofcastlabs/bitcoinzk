@@ -1,10 +1,7 @@
 #![no_main]
 sp1_zkvm::entrypoint!(main);
 
-mod btc_blocks_wrapper;
-mod error;
-
-use crate::btc_blocks_wrapper::BtcBlocksWrapper;
+use bitcoin::BtcBlocksWrapper;
 use sp1_zkvm::io::{read, write};
 use std::str::FromStr;
 
