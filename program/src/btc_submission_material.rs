@@ -47,7 +47,7 @@ impl FromStr for BtcSubmissionMaterials {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Getters)]
+#[derive(Debug, Clone, Serialize, Deserialize, Getters, Constructor)]
 pub(crate) struct BtcSubmissionMaterial {
     id: BlockHash,
     block: BtcBlock,
@@ -133,30 +133,5 @@ impl FromStr for BtcSubmissionMaterial {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let j = BtcSubmissionMaterialJson::from_str(s)?;
         BtcSubmissionMaterial::try_from(j)
-        /*
-        Ok(Self {
-            id: BlockHash::from_str(j.block().id()).unwrap_or_else(|_| {
-                BlockHash::from_str(
-                    "0x0000000000000000000000000000000000000000000000000000000000000000",
-                )
-                .unwrap()
-            }),
-            block: BtcBlock {
-                txdata: j
-                    .transactions
-                    .iter()
-                    .map(|t| Ok(btc_deserialize::<BtcTransaction>(&decode(t)?)?))
-                    .collect::<Result<Vec<_>, Self::Err>>()?,
-                header: BtcBlockHeader {
-                    nonce: *j.block().nonce(),
-                    time: *j.block().timestamp(),
-                    version: Version::from_consensus(*j.block().version()),
-                    bits: CompactTarget::from_consensus(*j.block().bits()),
-                    merkle_root: TxMerkleNode::from_str(&j.block().merkle_root)?,
-                    prev_blockhash: BlockHash::from_str(&j.block().previousblockhash)?,
-                },
-            },
-        })
-        */
     }
 }

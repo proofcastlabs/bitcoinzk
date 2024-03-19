@@ -17,21 +17,22 @@ pub(crate) enum Commands {
         hash: String,
 
         /// Path to btc submission material
-        path: String,
+        blocks_path: String,
 
         /// Optional path to elf
         #[arg(long)]
         elf_path: Option<String>,
     },
 
-    GetSubmissionMaterial {
+    /// Get BTC blocks for ZKP light-client proof generation
+    GetBlocks {
         /// BTC rpc endpoint
         rpc_endpoint: String,
 
         /// Start block number
         start: u64,
 
-        /// End block number
-        end: u64,
+        /// Amount of blocks to get
+        amount: u64,
     },
 }
