@@ -3,7 +3,7 @@ use bitcoin::{
     DEFAULT_ELF_PATH, MAX_NUM_BLOCKS,
     write_blocks_to_file,
     Cli, Commands,
-    Error,
+    BtcError,
     get_blocks,
 };
 
@@ -13,7 +13,7 @@ use std::{
     path::Path,
 };
 
-async fn handle_cli(cli: Cli) -> Result<(), Error> {
+async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
     match cli.commands() {
         Commands::GetBlocks {
             start,
@@ -21,7 +21,7 @@ async fn handle_cli(cli: Cli) -> Result<(), Error> {
             rpc_endpoint,
         } => {
             if *amount > MAX_NUM_BLOCKS {
-                return Err(Error::TooManyBlocks(*amount));
+                return Err(BtcError::TooManyBlocks(*amount));
             };
             let blocks = get_blocks(rpc_endpoint, *start, *amount).await?;
             write_blocks_to_file(blocks)?;
