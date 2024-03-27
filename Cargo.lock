@@ -239,15 +239,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bitcoinz-program"
-version = "0.1.0"
-dependencies = [
- "bitcoin 0.1.0",
- "sp1-zkvm",
-]
-
-[[package]]
-name = "bitcoinz-script"
+name = "bitcoinz"
 version = "0.1.0"
 dependencies = [
  "bitcoin 0.1.0",
@@ -255,6 +247,14 @@ dependencies = [
  "derive-getters",
  "sp1-core",
  "tokio",
+]
+
+[[package]]
+name = "bitcoinz-program"
+version = "0.1.0"
+dependencies = [
+ "bitcoin 0.1.0",
+ "sp1-zkvm",
 ]
 
 [[package]]

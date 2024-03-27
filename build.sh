@@ -8,4 +8,4 @@ cd $(dirname -- $0)
 
 ./create-elf.sh
 
-RUST_LOG=debug cargo build --release -p bitcoinz-script
+RUST_LOG=debug cargo build --release -p bitcoinz
