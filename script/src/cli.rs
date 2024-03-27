@@ -13,9 +13,6 @@ pub struct Cli {
 pub enum Commands {
     /// Generate proof
     GenerateProof {
-        /// Hash of block prior to submission material
-        hash: String,
-
         /// Path to btc submission material
         blocks_path: String,
 

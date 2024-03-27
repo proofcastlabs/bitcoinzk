@@ -26,7 +26,6 @@ async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
             Ok(())
         }
         Commands::GenerateProof {
-            hash,
             blocks_path,
             elf_path,
         } => {
