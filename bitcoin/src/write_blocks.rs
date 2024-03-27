@@ -1,4 +1,4 @@
-use crate::{btc_blocks::BtcBlocks, btc_blocks_wrapper::BtcBlocksWrapper, BtcError};
+use crate::{btc_blocks::BtcBlocks, BtcError};
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -12,7 +12,7 @@ pub fn write_blocks_to_file(blocks: BtcBlocks, maybe_path: Option<String>) -> Re
         debug!("writing output to {DEFAULT_BLOCKS_PATH}");
         File::create(DEFAULT_BLOCKS_PATH)
     }?;
-    let bytes: Vec<u8> = BtcBlocksWrapper::new(blocks.iter().cloned().collect()).try_into()?;
+    let bytes: Vec<u8> = blocks.try_into()?;
     file.write_all(&bytes)?;
     debug!("blocks written successfully");
     Ok(())

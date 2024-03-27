@@ -1,12 +1,12 @@
-mod btc_block;
+mod btc_block_json;
 mod btc_blocks;
-mod btc_blocks_wrapper;
 mod constants;
 mod curl;
 mod error;
 mod get_block_hashes;
 mod get_blocks;
 mod json_response;
+mod test_utils;
 mod write_blocks;
 
 #[macro_use]
@@ -16,7 +16,6 @@ use self::{curl::curl, json_response::JsonResponse};
 
 pub use self::{
     btc_blocks::BtcBlocks,
-    btc_blocks_wrapper::BtcBlocksWrapper,
     constants::{DEFAULT_ELF_PATH, MAX_NUM_BLOCKS},
     error::BtcError,
     get_blocks::get_blocks,

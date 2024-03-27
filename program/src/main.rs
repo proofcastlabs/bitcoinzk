@@ -1,12 +1,12 @@
 #![no_main]
 sp1_zkvm::entrypoint!(main);
 
-use bitcoin::BtcBlocksWrapper;
+use bitcoin::BtcBlocks;
 use sp1_zkvm::io::{read, write};
 use std::str::FromStr;
 
 fn main() {
-    let blocks = BtcBlocksWrapper::from_str(&read::<String>()).expect("to unwrap blocks wrapper");
+    let blocks = BtcBlocks::from_str(&read::<String>()).expect("to unwrap btc blocks");
     let are_chained = !blocks.iter().enumerate().fold(false, |acc, (i, block)| {
         if i > 0 {
             let prev_hash = blocks[i - 1].block_hash();
