@@ -1,8 +1,11 @@
-[workspace]
 [package]
 version = "0.1.0"
-name = "bitcoinz-script"
+name = "bitcoinz"
 edition = "2021"
 
 [dependencies]
+derive-getters = "0.3.0"
+bitcoin = { path = "../bitcoin" }
+clap = { version = "4.5.2", features = ["derive"]}
+tokio = { version = "1.36.0", features = [ "full"] }
 sp1-core = { git = "https://github.com/succinctlabs/sp1.git" }

@@ -1,34 +1,79 @@
-//! A simple script to generate and verify the proof of a given program.
+mod cli;
 
-use std::fs::read_to_string;
-use sp1_core::{SP1Prover, SP1Stdin, SP1Verifier, utils};
+use bitcoin::{get_blocks, write_blocks_to_file, BtcError, DEFAULT_ELF_PATH, MAX_NUM_BLOCKS};
+use clap::Parser;
+use cli::{Cli, Commands};
 
-const ELF: &[u8] = include_bytes!("../../program/elf/riscv32im-succinct-zkvm-elf");
+use sp1_core::{utils as sp1_utils, SP1Prover, SP1Stdin, SP1Verifier};
+use std::{
+    fs::{read, read_to_string},
+    path::Path,
+};
 
-fn main() {
-    //utils::setup_tracer();
+async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
+    match cli.commands() {
+        Commands::GetBlocks {
+            start,
+            amount,
+            output,
+            rpc_endpoint,
+        } => {
+            if *amount > MAX_NUM_BLOCKS {
+                return Err(BtcError::TooManyBlocks(*amount));
+            };
+            let blocks = get_blocks(rpc_endpoint, *start, *amount).await?;
+            write_blocks_to_file(blocks, output.clone())?;
+            Ok(())
+        }
+        Commands::GenerateProof {
+            blocks_path,
+            elf_path,
+        } => {
+            let s = read_to_string(blocks_path)
+                .unwrap_or_else(|_| panic!("could not read file at path: {blocks_path}"));
 
-    let mut args = std::env::args();
-    let path = args.nth(1).expect("please supply an argument");
-    let s = read_to_string(&path).expect(&format!("could not read file at path: '{path}'"));
+            let elf_path = if let Some(path) = elf_path {
+                path
+            } else {
+                DEFAULT_ELF_PATH
+            };
 
-    // Generate proof.
-    let mut stdin = SP1Stdin::new();
-    stdin.write(&s);
+            // NOTE: Check the elf exists
+            if !Path::new(elf_path).exists() {
+                panic!(
+                    "elf does not exist at path: {elf_path}, see the readme for how to create it!"
+                );
+            };
 
-    let mut proof = SP1Prover::prove(ELF, stdin).expect("proving failed");
+            let elf_bytes = read(elf_path).expect("this to work because of above check");
 
-    // Read output.
-    let r = proof.stdout.read::<bool>();
-    println!("proof result r: {r}");
+            // NOTE:  Generate proof.
+            let mut stdin = SP1Stdin::new();
+            stdin.write(&s);
 
-    // Verify proof.
-    SP1Verifier::verify(ELF, &proof).expect("verification failed");
+            let mut proof = SP1Prover::prove(elf_bytes.as_slice(), stdin).expect("proving failed");
 
-    // Save proof.
-    proof
-        .save("proof-with-io.json")
-        .expect("saving proof failed");
+            // NOTE: Read output.
+            let r = proof.stdout.read::<bool>();
+            println!("proof result r: {r}");
 
-    println!("succesfully generated and verified proof for the program!")
+            // NOTE: Verify proof.
+            SP1Verifier::verify(elf_bytes.as_slice(), &proof).expect("verification failed");
+
+            // NOTE: Save proof.
+            proof
+                .save("proof-with-io.json")
+                .expect("saving proof failed");
+
+            println!("succesfully generated and verified proof for the program!");
+            Ok(())
+        }
+    }
+}
+
+#[tokio::main]
+async fn main() {
+    let cli = Cli::parse();
+    sp1_utils::setup_tracer();
+    handle_cli(cli).await.unwrap(); // FIXME
 }
