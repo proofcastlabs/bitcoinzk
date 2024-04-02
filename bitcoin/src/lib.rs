@@ -9,9 +9,6 @@ mod json_response;
 mod test_utils;
 mod write_blocks;
 
-#[macro_use]
-extern crate log;
-
 use self::{curl::curl, json_response::JsonResponse};
 
 pub use self::{

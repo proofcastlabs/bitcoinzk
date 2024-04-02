@@ -18,7 +18,6 @@ async fn get_block_future(
     rpc_endpoint: &str,
     block_hash: BlockHash,
 ) -> impl Future<Output = Result<Output, BtcError>> + '_ {
-    debug!("getting block with hash {block_hash}");
     curl(rpc_endpoint, RPC_METHOD, json!([block_hash, VERBOSITY]))
 }
 

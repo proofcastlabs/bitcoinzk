@@ -197,7 +197,6 @@ dependencies = [
  "derive_more",
  "futures",
  "hex",
- "log",
  "serde",
  "serde_json",
  "thiserror",
