@@ -1,8 +1,7 @@
 [package]
 edition = "2021"
 version = "0.1.0"
-name = "bitcoinz-program"
+name = "bitcoinz-lc"
 
 [dependencies]
 bitcoin = { path = "../bitcoin" }
-sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git" }

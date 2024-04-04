@@ -1,14 +1,7 @@
-#![no_main]
-sp1_zkvm::entrypoint!(main);
-
 use bitcoin::BtcBlocks;
-use sp1_zkvm::io::{read, write};
-use std::str::FromStr;
 
-fn main() {
-    let blocks = BtcBlocks::from_str(&read::<String>()).expect("to unwrap btc blocks");
-
-    let result = !blocks.iter().enumerate().fold(false, |acc, (i, block)| {
+pub fn prove_btc_blocks(blocks: BtcBlocks) -> bool {
+    !blocks.iter().enumerate().fold(false, |acc, (i, block)| {
         let merkle_root_is_valid = block.check_merkle_root();
 
         let is_chained = if i > 0 {
@@ -25,8 +18,5 @@ fn main() {
         // NOTE: We're using `false` to start with here and `||` so we can flip the bool once and have it stay
         // that way if anything is amiss at any point.
         acc || !(merkle_root_is_valid && is_chained)
-    });
-
-
-    write(&result)
+    })
 }
