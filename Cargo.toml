@@ -4,6 +4,7 @@ members = [
     "lc",
     "script",
     "bitcoin",
+    "sp1/program",
 ]
 
 [profile.dev]

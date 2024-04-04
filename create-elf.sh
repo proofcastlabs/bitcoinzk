@@ -13,7 +13,7 @@ if [ -z "${RISCV}" ]; then
     exit 1
 fi
 
-cd ./program
+cd ./sp1/program
 
 CC_riscv32im_succinct_zkvm_elf=$RISCV cargo prove build
 
