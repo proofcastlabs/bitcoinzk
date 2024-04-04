@@ -2,8 +2,9 @@
 resolver = "2"
 members = [
     "lc",
-    "script",
+    "cli",
     "bitcoin",
+    "sp1/cli",
     "sp1/program",
 ]
 

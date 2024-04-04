@@ -1,11 +1,11 @@
 [package]
 version = "0.1.0"
-name = "bitcoinz"
+name = "bitcoinz-sp1-cli"
 edition = "2021"
 
 [dependencies]
-derive-getters = "0.3.0"
-bitcoin = { path = "../bitcoin" }
+bitcoin = { path = "../../bitcoin" }
 clap = { version = "4.5.2", features = ["derive"]}
+cli = { package="bitcoinz-cli", path="../../cli" }
 tokio = { version = "1.36.0", features = [ "full"] }
 sp1-core = { git = "https://github.com/succinctlabs/sp1.git" }
