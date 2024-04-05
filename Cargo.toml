@@ -5,7 +5,9 @@ members = [
     "cli",
     "bitcoin",
     "sp1/cli",
+    "risc0/cli",
     "sp1/program",
+    "risc0/methods",
 ]
 
 [profile.dev]

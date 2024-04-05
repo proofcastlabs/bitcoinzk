@@ -40,3 +40,37 @@ After building, get a BTC rpc endpoint and use the CLI to download a batch of bl
 RUST_LOG=debug ./target/release/bitcoinz-sp1-cli generateProof <blocksFileName>
 
 ```
+
+# risc0
+
+__:radioactive: IMPORTANT:__ Read the `./risc0/methods/program/README.md` first to make sure you can successfully build the `elf`.
+
+Then, to build everything, in the root just run the build script:
+
+`./build-risc0.sh`
+
+This will first create the `elf` and then build the CLI.
+
+Then, for usage info, run the binary which can be found in:
+
+`./target/release/bitcoinz-risc0-cli --help`
+
+Output:
+
+```
+Usage: bitcoinz-risc0-cli <COMMAND>
+
+Commands:
+  generateProof  Generate proof
+  getBlocks      Get BTC blocks for ZKP light-client proof generation
+  help           Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help     Print help
+  -V, --version  Print version
+
+```
+
+__Example:__
+
+See [sp1](#sp1)

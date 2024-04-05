@@ -1,0 +1,10 @@
+[package]
+version = "0.1.0"
+edition = "2021"
+name = "bitcoinz-risc0-lc"
+
+[build-dependencies]
+risc0-build = { version = "0.21.0" }
+
+[package.metadata.risc0]
+methods = ["program"]
