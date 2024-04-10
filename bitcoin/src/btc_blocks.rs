@@ -1,7 +1,4 @@
-use crate::{
-    btc_block_json::{BtcBlockJson, BtcBlockJsons},
-    BtcError,
-};
+use crate::{btc_block_json::BtcBlockJsons, BtcError};
 use bitcoin::blockdata::block::Block as BtcBlock;
 use derive_more::{Constructor, Deref};
 use serde::{Deserialize, Serialize};

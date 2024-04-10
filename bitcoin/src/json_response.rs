@@ -10,14 +10,6 @@ pub(crate) struct JsonResponse {
 }
 
 impl JsonResponse {
-    pub(crate) fn is_error(&self) -> bool {
-        self.error.is_some()
-    }
-
-    pub(crate) fn is_result(&self) -> bool {
-        self.result.is_some()
-    }
-
     pub(crate) fn result(self) -> Result<Json, BtcError> {
         if let Some(j) = self.result {
             Ok(j)
