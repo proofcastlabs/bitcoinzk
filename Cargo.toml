@@ -6,13 +6,26 @@ members = [
     "bitcoin",
     "sp1/cli",
     "risc0/cli",
+    "jolt/cli",
     "sp1/program",
     "risc0/methods",
+    "jolt/guest"
 ]
 
-[profile.dev]
-split-debuginfo = "unpacked"
+# [profile.dev]
+# split-debuginfo = "unpacked"
+
+# [profile.release]
+# lto = "thin"
+# overflow-checks = true
 
 [profile.release]
-lto = "thin"
-overflow-checks = true
+debug = 1
+codegen-units = 1
+lto = "fat"
+
+
+[patch.crates-io]
+ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "optimize/field-from-u64" }
+ark-ec = { git = "https://github.com/a16z/arkworks-algebra", branch = "optimize/field-from-u64" }
+ark-serialize = { git = "https://github.com/a16z/arkworks-algebra", branch = "optimize/field-from-u64" }

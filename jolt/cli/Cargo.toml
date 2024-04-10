@@ -1,0 +1,8 @@
+[package]
+name = "bitcoinz-jolt-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+jolt = { package = "jolt-sdk", git = "https://github.com/a16z/jolt", features = ["std"] }
+guest = { path = "../guest" }
