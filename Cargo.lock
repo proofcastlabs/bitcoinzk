@@ -457,8 +457,12 @@ dependencies = [
 name = "bitcoinz-jolt-cli"
 version = "0.1.0"
 dependencies = [
+ "bitcoin 0.1.0",
+ "bitcoinz-cli",
+ "clap",
  "guest",
  "jolt-sdk",
+ "tokio",
 ]
 
 [[package]]
@@ -1627,6 +1631,8 @@ dependencies = [
 name = "guest"
 version = "0.1.0"
 dependencies = [
+ "bitcoin 0.1.0",
+ "bitcoinz-lc",
  "jolt-sdk",
 ]
 

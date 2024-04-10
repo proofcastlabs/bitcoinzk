@@ -11,4 +11,6 @@ path = "./src/lib.rs"
 guest = []
 
 [dependencies]
+bitcoin = { path = "../../bitcoin" }
+lc = { package = "bitcoinz-lc", path = "../../lc" }
 jolt = { package = "jolt-sdk", git = "https://github.com/a16z/jolt" }
