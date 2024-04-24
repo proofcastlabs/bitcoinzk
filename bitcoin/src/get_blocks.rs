@@ -2,7 +2,8 @@ use crate::{
     btc_block_json::BtcBlockJson, btc_blocks::BtcBlocks, curl, get_block_hashes::get_block_hashes,
     json_response::JsonResponse, BtcError,
 };
-use bitcoin::{blockdata::block::Block as BtcBlock, BlockHash};
+use bitcoin::blockdata::block::Block as BtcBlock;
+pub use bitcoin::BlockHash;
 use futures::{stream, Future, Stream, StreamExt};
 use serde_json::json;
 use std::{

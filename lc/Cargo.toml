@@ -5,3 +5,4 @@ name = "bitcoinz-lc"
 
 [dependencies]
 bitcoin = { path = "../bitcoin" }
+serde = "1.0.198"

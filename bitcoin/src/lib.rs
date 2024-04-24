@@ -18,6 +18,6 @@ pub use self::{
     btc_blocks::BtcBlocks,
     constants::{DEFAULT_ELF_PATH, MAX_NUM_BLOCKS},
     error::BtcError,
-    get_blocks::get_blocks,
+    get_blocks::{get_blocks, BlockHash},
     write_blocks::write_blocks_to_file,
 };
