@@ -4,6 +4,7 @@ members = [
     "lc",
     "cli",
     "bitcoin",
+    "vanilla",
     "sp1/cli",
     "risc0/cli",
     "sp1/program",
