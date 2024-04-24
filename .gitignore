@@ -2,3 +2,8 @@
 /elf/riscv32im-succinct-zkvm-elf
 **/*block*.json
 **/proof-with-io.json
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
