@@ -8,6 +8,7 @@ risc0-zkvm = "0.21.0"
 bitcoin = { path = "../../bitcoin" }
 clap = { version = "4.5.2", features = ["derive"]}
 cli = { package="bitcoinz-cli", path="../../cli" }
+lc = { package = "bitcoinz-lc", path = "../../lc" }
 tokio = { version = "1.36.0", features = [ "full"] }
 methods = { package = "bitcoinz-risc0-lc", path = "../methods" }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }

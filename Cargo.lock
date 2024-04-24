@@ -443,6 +443,7 @@ version = "0.1.0"
 dependencies = [
  "bitcoin 0.1.0",
  "bitcoinz-cli",
+ "bitcoinz-lc",
  "bitcoinz-risc0-lc",
  "clap",
  "risc0-zkvm",
