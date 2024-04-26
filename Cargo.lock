@@ -460,7 +460,7 @@ dependencies = [
 
 [[package]]
 name = "bitcoinz-sp1-cli"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "bitcoin 0.1.0",
  "bitcoinz-cli",
