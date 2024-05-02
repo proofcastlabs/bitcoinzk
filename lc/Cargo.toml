@@ -1,0 +1,7 @@
+[package]
+edition = "2021"
+version = "0.1.0"
+name = "bitcoinz-lc"
+
+[dependencies]
+bitcoin = { path = "../bitcoin" }

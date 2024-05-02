@@ -5,7 +5,7 @@ set -e
 
 # Switch to dir this script lives in
 cd $(dirname -- $0)
-
+#
 # check the expected env var is set
 
 if [ -z "${RISCV}" ]; then
@@ -13,10 +13,4 @@ if [ -z "${RISCV}" ]; then
     exit 1
 fi
 
-cd ./sp1/program
-
-CC_riscv32im_succinct_zkvm_elf=$RISCV cargo prove build
-
-cd -
-
-echo "elf created successfully in ./elf/"
+CC_riscv32im_risc0_zkvm_elf=$RISCV RUST_LOG=debug cargo build --release -p bitcoinz-risc0-cli

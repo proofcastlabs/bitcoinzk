@@ -1,0 +1,11 @@
+[package]
+edition = "2021"
+version = "0.1.0"
+name = "bitcoinz-risc0-lc-program"
+
+[workspace]
+
+[dependencies]
+bitcoin = { path = "../../../bitcoin" }
+lc = { package = "bitcoinz-lc", path = "../../../lc" }
+risc0-zkvm = { version = "0.21.0", default-features = false, features = [ "std" ] }
