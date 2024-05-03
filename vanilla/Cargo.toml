@@ -1,0 +1,11 @@
+[package]
+name = "vanilla-lc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bitcoin = { path = "../bitcoin" }
+cli = { package="bitcoinz-cli", path="../cli" }
+lc = { package = "bitcoinz-lc", path = "../lc" }
+clap = { version = "4.5.2", features = ["derive"]}
+tokio = { version = "1.36.0", features = [ "full"] }
