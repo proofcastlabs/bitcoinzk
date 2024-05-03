@@ -1,12 +1,14 @@
-use bitcoin::{get_blocks, write_blocks_to_file, BtcError, DEFAULT_ELF_PATH, MAX_NUM_BLOCKS};
-use clap::Parser;
-use cli::{Cli, Commands};
-
-use sp1_core::{utils as sp1_utils, SP1Prover, SP1Stdin, SP1Verifier};
 use std::{
     fs::{read, read_to_string},
     path::Path,
 };
+
+use clap::Parser;
+use sp1_core::{utils as sp1_utils, SP1Prover, SP1Stdin, SP1Verifier};
+
+use bitcoin::{get_blocks, write_blocks_to_file, BtcError, DEFAULT_ELF_PATH, MAX_NUM_BLOCKS};
+use cli::{Cli, Commands};
+use lc::Proof as LCProof;
 
 async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
     match cli.commands() {
@@ -52,8 +54,8 @@ async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
             let mut proof = SP1Prover::prove(elf_bytes.as_slice(), stdin).expect("proving failed");
 
             // NOTE: Read output.
-            let r = proof.stdout.read::<bool>();
-            println!("proof result r: {r}");
+            let r = proof.stdout.read::<LCProof>();
+            println!("proof result: {r:?}");
 
             // NOTE: Verify proof.
             SP1Verifier::verify(elf_bytes.as_slice(), &proof).expect("verification failed");

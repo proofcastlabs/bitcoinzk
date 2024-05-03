@@ -5,6 +5,7 @@ use clap::Parser;
 use risc0_zkvm::{default_prover, ExecutorEnv};
 
 use cli::{Cli, Commands};
+use lc::Proof;
 use methods::{BITCOINZ_RISC0_LC_PROGRAM_ELF as ELF, BITCOINZ_RISC0_LC_PROGRAM_ID as ID};
 
 async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
@@ -35,8 +36,9 @@ async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
             let receipt = prover.prove(env, ELF).unwrap();
 
             // NOTE: Read output.
-            let r: bool = receipt.journal.decode().unwrap();
-            println!("proof result r: {r}");
+
+            let proof: Proof = receipt.journal.decode().unwrap();
+            println!("proof result: {proof:?}");
 
             // NOTE: Verify proof.
             receipt.verify(ID).expect("verification failed");
