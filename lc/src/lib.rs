@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use serde::{Deserialize, Serialize};
 
 use bitcoin::{BlockHash, BtcBlocks};
@@ -42,4 +44,8 @@ pub fn prove_btc_blocks(blocks: BtcBlocks) -> Proof {
         }
         None => Proof::False,
     }
+}
+
+pub fn prove_btc_blocks_from_string(blocks: String) -> Proof {
+    prove_btc_blocks(BtcBlocks::from_str(&blocks).expect("to unwrap btc blocks"))
 }
