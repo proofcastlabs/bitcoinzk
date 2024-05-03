@@ -1,12 +1,10 @@
-mod vanilla_prover;
-
 use std::fs::read_to_string;
 
 use bitcoin::{get_blocks, write_blocks_to_file, BtcError, MAX_NUM_BLOCKS};
 use clap::Parser;
 
 use cli::{Cli, Commands};
-use vanilla_prover::prove;
+use lc::prove_btc_blocks_from_string;
 
 async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
     match cli.commands() {
@@ -27,7 +25,7 @@ async fn handle_cli(cli: Cli) -> Result<(), BtcError> {
             let s = read_to_string(blocks_path)
                 .unwrap_or_else(|_| panic!("could not read file at path: {blocks_path}"));
 
-            let proof = prove(&s);
+            let proof = prove_btc_blocks_from_string(s);
 
             println!("proof result: {proof:?}");
             Ok(())
